@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+<bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+<property name="username" value="reddy"></property>
+<property name="password" value="reddy"></property>
+</bean>
+
+<bean id="sessionfactory" class="org.springframework.orm.hibernate.LocalSessionFactoryBean">
+<property name="dataSource" ref="datasource"></property>
+<property name="mappingResources">
+<list>
+<value>hibernate.hbm.xml</value>
+</list>
+</property>
+<property name="hibernateProperties">
+<list>
+<props>
+<prop key="hibernate.dialect"> org.hibernate.dialect.Orcale9Dialect</prop>
+<prop key="hibernate.hbm2ddl.auto">Update</prop>
+<prop key="hibernate.show_sql">true</prop>
+</props>
+</list>
+</property>
+</bean>
+
+<bean id="template" class="org.springframework.orm.hibernate.HibernateTemplate">
+<property name="sessionFactory" ref="sessionfactory"></property>
+</bean>
+
+<bean id="empdao" class="com.java.springjdbc.EmpDaoImpl">
+<property name="template" ref="template"></property>
+</bean>
+
+</beans>
